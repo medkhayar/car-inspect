@@ -21,5 +21,5 @@ export async function POST(request: NextRequest) {
   await writeFile(path, buffer)
   console.log(`open ${path} to see the uploaded file`)
 
-  return NextResponse.json({ success: true, url:retPath })
+  return NextResponse.json({ success: true, url:retPath }) 
 }
