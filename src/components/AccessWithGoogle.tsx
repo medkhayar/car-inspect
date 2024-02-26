@@ -19,7 +19,7 @@ const GAuth= ()=>{
   supabase.auth.signInWithOAuth({
    provider: 'google',
    options:{
-       redirectTo: "https://car-inspect-lac.vercel.app/auth/v1/callback/"
+       redirectTo: "/auth/v1/callback/"
    }
  })
 }
