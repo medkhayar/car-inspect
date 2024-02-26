@@ -19,6 +19,7 @@ export async function POST(request: NextRequest) {
   const retPath = `/uploads/avatars/${filename}`
   const path = `public/uploads/avatars/${filename}`
   await writeFile(path, buffer)
-  
+  console.log(`open ${path} to see the uploaded file`)
+
   return NextResponse.json({ success: true, url:retPath }) 
 }
