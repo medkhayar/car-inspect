@@ -26,6 +26,7 @@ const getURL = () => {
 export default   function SigninWithGoogle({label="Sign in with Google"}){
   
 const GAuth= ()=>{
+  console.log("GAUTH:",getURL()+"auth/v1/callback/");
   supabase.auth.signInWithOAuth({
    provider: 'google',
    options:{
