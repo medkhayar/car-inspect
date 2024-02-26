@@ -20,7 +20,7 @@ function getFiles(dir, files :any[]= []) {
 }
 
 export default function Files(){
-    return <>
+    return <> FILES
+    {JSON.stringify(getFiles(process.cwd()))}
     </>
-    JSON.stringify(getFiles(process.cwd()))
 }
