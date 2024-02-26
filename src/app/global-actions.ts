@@ -168,9 +168,12 @@ export async function addTest(){
         line.energy_types= line.energy_types.map(et=>{return {active:true,type:et,center_line:line!.id}});
         console.log(line)
         await Promise.all([
-            await supabase.from('center_line_vehicle_types').update({deleted:true}).eq("center_line",line.id),
-            await supabase.from('center_line_appointment_types').update({deleted:true}).eq("center_line",line.id),
-            await supabase.from('center_line_energy_types').update({deleted:true}).eq("center_line",line.id),
+            //await supabase.from('center_line_vehicle_types').update({deleted:true}).eq("center_line",line.id),
+            //await supabase.from('center_line_appointment_types').update({deleted:true}).eq("center_line",line.id),
+            //await supabase.from('center_line_energy_types').update({deleted:true}).eq("center_line",line.id),
+            await supabase.from('center_line_vehicle_types').delete().eq("center_line",line.id),
+            await supabase.from('center_line_appointment_types').delete().eq("center_line",line.id),
+            await supabase.from('center_line_energy_types').delete().eq("center_line",line.id),
         ]);
 
         await Promise.all([

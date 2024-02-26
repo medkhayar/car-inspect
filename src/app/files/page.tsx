@@ -19,7 +19,7 @@ function getFiles(dir, files :any[]= []) {
   return files
 }
 
-export default function Files(){
+export default  function Files(){
     return <> FILES
     {JSON.stringify(getFiles(process.cwd()))}
     </>
