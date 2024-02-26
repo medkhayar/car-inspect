@@ -19,7 +19,7 @@ const GAuth= ()=>{
   supabase.auth.signInWithOAuth({
    provider: 'google',
    options:{
-       redirectTo: "http://localhost:3000/auth/v1/callback/"
+       redirectTo: "/auth/v1/callback/"
    }
  })
 }
