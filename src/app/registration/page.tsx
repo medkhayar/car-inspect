@@ -29,7 +29,17 @@ export default async function Registration() {
           name:"",
           address:"",
           city:null,
-          zipcode:""
+          zipcode:"",
+          manager:{
+            name:"",
+            email:"",
+            phone:""
+          },
+          support:{
+            name:"",
+            email:"",
+            phone:""
+          }
         }
       }}).then(({data:{user}})=>{
         supabase.from('providers').insert({id:user!.id}).then(()=>{
