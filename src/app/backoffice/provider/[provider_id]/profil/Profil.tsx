@@ -32,6 +32,7 @@ export default function NewCenter({user,provider_id,cities,error}){
   }catch(e){}
 
   const [isLoaded,setIsLoaded]=useState(false)
+  const [isUpdateLoaded,setIsUpdateLoaded]=useState(false)
   const [isDeleteLoaded,setIsDeleteLoaded]=useState(false)
   const [logo,setLogo]=useState<any>(_logo)
   const [userAvatar,setUserAvatar]=useState<any>(_avatar)
@@ -51,9 +52,12 @@ export default function NewCenter({user,provider_id,cities,error}){
       initialValues: {
       },
       onSubmit(){
-          deleteUserV0().then(res=>{ 
+        setIsDeleteLoaded(true)
+          deleteUserV0(user.id).then(res=>{ 
               const url=(`/access`)
-              router.push(url)
+              //router.push(url)
+              console.log(res)
+              setIsDeleteLoaded(false)
             }).catch(e=>{
               console.log("error",e)
               setIsDeleteLoaded(false)
@@ -130,6 +134,7 @@ export default function NewCenter({user,provider_id,cities,error}){
         //console.log("Submit")
         console.log("city",values.city)
         setIsLoaded(false);
+        setIsUpdateLoaded(true);
       if(formik.isValid){      
           let data={	
             logo:logo,
@@ -149,9 +154,13 @@ export default function NewCenter({user,provider_id,cities,error}){
           console.log("res",res)
         const url=(`/backoffice/provider/${provider_id}/`)
         router.push(url)
+        
+        setIsUpdateLoaded(false)
       }).catch(e=>{
         console.log("error",e)
         setIsLoaded(false)
+        
+        setIsUpdateLoaded(false)
       })
         }
       },
@@ -361,7 +370,19 @@ export default function NewCenter({user,provider_id,cities,error}){
 
               <div className="md:col-span-5 text-right">
                 <div className="inline-flex items-end">
-                  <button disabled={!isLoaded} onClick={()=>{formik.submitForm()}} className="bg-[#3D84A7] hover:bg-[#47466D] text-xs text-white  py-2 px-4 rounded">Update profil</button>
+                  <button disabled={!isLoaded || isUpdateLoaded} onClick={()=>{formik.submitForm()}} className="bg-[#3D84A7] hover:bg-[#47466D] text-xs text-white  py-2 px-4 rounded flex">
+                    {!isUpdateLoaded && <>Update profil</>}
+                  {isUpdateLoaded && <>
+                    <svg className="w-5 h-5 mr-3 -ml-1 text-white-500 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    <span>...</span>
+                    </>}
+                    </button>
                 </div>
               </div>
 
@@ -385,7 +406,20 @@ export default function NewCenter({user,provider_id,cities,error}){
 
               <div className="md:col-span-5 text-right">
                 <div className="inline-flex items-end">
-                  <button disabled={!isLoaded} onClick={()=>{formik_delete.submitForm()}} className="bg-red-600 hover:bg-red-700 text-xs text-white  py-2 px-4 rounded">Disable account</button>
+                  <button disabled={!isLoaded || isDeleteLoaded} onClick={()=>{formik_delete.submitForm()}} className="bg-red-600 hover:bg-red-700 text-xs text-white  py-2 px-4 rounded flex">
+                    
+                    {!isDeleteLoaded && <>Disable account</>}
+                  {isDeleteLoaded && <>
+                    <svg className="w-5 h-5 mr-3 -ml-1 text-white-500 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    <span>...</span>
+                    </>}
+                    </button>
                 </div>
               </div>
 

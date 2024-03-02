@@ -5,7 +5,7 @@ import AuthProvider from "@/contexts/AuthProvider";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { GlobalContextProvider } from "@/contexts/GlobalContext";
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -23,13 +23,16 @@ export default async function RootLayout({
   return (
   
     <html lang="en">
-      <body className={inter.className}>
+      <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
+      <body >
+        <SpeedInsights/>
         <AuthProvider value={userResponse.data.user}>
         <GlobalContextProvider>
           {children}
         </GlobalContextProvider>
         </AuthProvider>
-        
         </body>
     </html>
   );

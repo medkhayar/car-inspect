@@ -111,3 +111,30 @@
     }
   
   }
+
+
+  /* Mui DatePicker selected date bg color */
+.Mui-selected,
+.Mui-selected{
+  /*background-color: rgb(255 139 0) !important;*/
+  background-color: #3d90f4 !important;
+  /*background-color: #2f556f !important;*/
+}
+.css-4pax7l-MuiPickersLayout-root{
+  padding: 0px;
+}
+.search .css-qa7bje-MuiButtonBase-root-MuiPickersDay-root.Mui-selected,
+.search .css-1jsy6pn-MuiButtonBase-root-MuiPickersDay-root.Mui-selected{
+  background-color: #3d90f4 !important;
+  /*background-color: #2f556f !important;*/
+}
+#__next:has(.search) ~ .MuiPickersPopper-root .Mui-selected,
+#__next:has(.search) ~ .MuiPickersPopper-root .Mui-selected{
+  background-color: #3d90f4 !important;
+  /*background-color: #2f556f !important;*/
+}
+#__next:has(.search) ~ .MuiDialog-root .Mui-selected,
+#__next:has(.search) ~ .MuiDialog-root .Mui-selected{
+  background-color: #3d90f4 !important;
+  /*background-color: #2f556f !important;*/
+}

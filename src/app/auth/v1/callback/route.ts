@@ -5,6 +5,8 @@ import { NextResponse } from 'next/server'
 export async function GET(request) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get('code')
+  const error = requestUrl.searchParams.get('error')
+  
 
   let redirectUrl=requestUrl.origin;
 
@@ -25,6 +27,10 @@ export async function GET(request) {
       }
       
     }
+  }
+
+  if(error){
+    redirectUrl=`${requestUrl.origin}/error?${error}`
   }
 
   // URL to redirect to after sign in process completes

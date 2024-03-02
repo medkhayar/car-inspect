@@ -3,7 +3,7 @@ import Marquee from "react-fast-marquee"
 export default function BlueRibbon(){
     return <div className={` search relative z-[5] transition-all ease-in-out duration-100 flex flex-col w-full bg-picton-blue-400 justify-center items-center  py-2 `}>
     <div id='steps' className='flex flex-col w-full max-w-8xl mx-auto items-center justify-center'>
-    <div className={`flex flex-col transition-all duration-100  ease-in-out lg:flex-row  p-4  w-full   z-10 rounded  `}>
+    <div className={`flex flex-col transition-all duration-100  ease-in-out lg:flex-row  p-2  w-full   z-10 rounded  `}>
 
       <div className=' flex flex-1   justify-center items-center  marquee '>
         <Marquee className="flex flex-col" pauseOnHover={true}>

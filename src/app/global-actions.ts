@@ -1,9 +1,11 @@
 "use server";
 import { Database } from '@/database.types';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { CookieOptions, createServerClient } from '@supabase/ssr';
 import { randomUUID } from 'crypto';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
+import { env } from 'process';
 
 
 
@@ -64,13 +66,38 @@ export async function addTest(){
         .from('centers')
         .update({deleted:true}).eq("id",center)
     }
-    export async function deleteUserV0() {
+    export async function deleteUserV0(user) {
         
         const cookieStore = cookies()
-        const supabase=createServerComponentClient<Database>({ cookies: () => cookieStore });
+        const supabase=createServerClient(env.NEXT_PUBLIC_SUPABASE_URL!,env.NEXT_SECRET_SUPABASE_ROLE_KEY!,{ 
+            cookies: {
+                get(name: string) {
+                  return cookieStore.get(name)?.value
+                },
+                set(name: string, value: string, options: CookieOptions) {
+                  try {
+                    cookieStore.set({ name, value, ...options })
+                  } catch (error) {
+                    // The `set` method was called from a Server Component.
+                    // This can be ignored if you have middleware refreshing
+                    // user sessions.
+                  }
+                },
+                remove(name: string, options: CookieOptions) {
+                  try {
+                    cookieStore.set({ name, value: '', ...options })
+                  } catch (error) {
+                    // The `delete` method was called from a Server Component.
+                    // This can be ignored if you have middleware refreshing
+                    // user sessions.
+                  }
+                }
+            }
+        });
+       
         revalidatePath('/');
-        const {data,error}=await supabase.auth.getUser();
-        return await supabase.auth.admin.updateUserById(data.user!.id,{ban_duration:'1000000h'})
+        
+        return await supabase.auth.admin.updateUserById(user,{ban_duration:'1000000h'})
     }
 
     export async function updateProviderV0(provider){

@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
   // For this, we'll just write it to the filesystem in a new location
   const filename=randomUUID()+".img"
   const retPath = `/uploads/avatars/${filename}`
-  const path = `./tmp/uploads/avatars/${filename}`;
+  const path = `./public/uploads/avatars/${filename}`;
   await writeFile(path, buffer)
   console.log(`open ${path} to see the uploaded file`)
 

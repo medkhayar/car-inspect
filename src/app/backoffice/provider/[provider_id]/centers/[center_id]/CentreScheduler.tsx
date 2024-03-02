@@ -12,6 +12,17 @@ const time=Array.from({length: 24}, (x, i) => i);
 export default function CenterScheduler({isLoading,line,provider,center,lines,error}){
 
     const [showSlotManager,setShowSlotManager]=useState(false)
+    const [shownDay,setShownDay]=useState(0)
+    const nextShownDay=()=>{
+        if(shownDay<6){
+            setShownDay(shownDay+1)
+        }
+    }
+    const previewShownDay=()=>{
+        if(shownDay>0){
+            setShownDay(shownDay-1)
+        }
+    }
     const [selectedTimeSlot,setSelectedTimeSlot]=useState<any>(null)
     const [slots,setSlots]= useState<any>(null)
 
@@ -64,14 +75,18 @@ export default function CenterScheduler({isLoading,line,provider,center,lines,er
     }
     return <div className="p-2 bg-white"><div className=" bg-white  flex flex-col w-full overflow-hidden md:overflow-x-auto">
         <div className="p-4 pb-6 flex justify-between ">
-            <p className="text-base font-semibold ">Controls time table  {line?`{ ${line?.name} }`:" - ( please select a control line )"}</p>
+            <p className="text-base font-semibold ">Controls time table<br/>{line?`{ ${line?.name} }`:" - ( please select a control line )"}</p>
         <div>
             <button onClick={()=>setShowSlotManager(true)} className="p-2 px-4 text-xs border-1 bg-[#3D84A7] hover:bg-[#47466D] rounded-md text-white font-bold"> new time slot </button>
         </div>
         </div>
+        <div className="flex justify-between md:hidden p-4 pt-0">
+            <button onClick={()=>previewShownDay()} className="rounded-md p-2 px-4 text-sm font-bold text-white bg-gray-600">{"<<"}</button>
+            <button onClick={()=>nextShownDay()} className="rounded-md p-2 px-4 text-sm font-bold text-white bg-gray-600">{">>"}</button>
+        </div>
         <div className="bg-white left-auto md:left-0 overflow-hidden md:w-auto relative inline-flex  rounded ">
         <span className="flex sticky bg-white left-0 overf justify-center items-center min-w-11 text-xs"></span>
-        {days.map((day,day_of_week)=><div key={`day-${day_of_week}`} className="justify-center bg-[#eeeeee] items-center px-4 p-2 min-w-[calc(100%-2.75rem)] md:min-w-20 flex   w-full float-left">
+        {days.map((day,day_of_week)=><div key={`day-${day_of_week}`} className={`${day_of_week!=shownDay?'hidden':''} justify-center bg-[#eeeeee] items-center px-4 p-2 min-w-[calc(100%-2.75rem)] md:min-w-20 md:flex   w-full float-left`}>
             <span className="text-sm">{day}</span>
             
         </div>)}
@@ -79,12 +94,12 @@ export default function CenterScheduler({isLoading,line,provider,center,lines,er
         {time.map((time)=>{
          return (time>=8 && time <=20) &&<div key={`time-${time}`} className={`bg-white overflow-visible left-auto md:left-0  md:w-auto relative inline-flex   `}>
             <span className="flex sticky bg-[#fafafa] left-0 justify-center items-center min-w-11 text-xs"><span>{time.toString().padStart(2,'0')}:00</span></span>
-        {days.map((day,day_of_week)=><div key={`d-${day_of_week}-t-${time}`} style={{backgroundColor:day_of_week<5?'white':'#f8f8f8'}} className=" relative h-[4.5rem] overflow-visible min-w-[calc(100%-2.75rem)] md:min-w-20 flex border-[#e4e4e4]  border-l-1 border-b-1 w-full float-left">
+        {days.map((day,day_of_week)=><div key={`d-${day_of_week}-t-${time}`} style={{backgroundColor:day_of_week<5?'white':'#f8f8f8'}} className={`${day_of_week!=shownDay?'hidden':''} md:flex relative h-[4.5rem] overflow-visible min-w-[calc(100%-2.75rem)] md:min-w-20 border-[#e4e4e4]  border-l-1 border-b-1 w-full float-left`}>
                     <div className="absolute top-0 left-0 w-full h-1/2 border-b-1 border-[#f1f1f1]"></div>
             {slots && <>
                 {slots[day_of_week].filter(s=>s.from_time.startsWith(`${time.toString().padStart(2,'0')}:`))
                     .map( e=><div onClick={()=>setSelectedTimeSlot(e)} key={`s-${e.id}`} style={{height:getTimeDiff(e),top:getTimeStart(e)}} className="absolute cursor-pointer w-[calc(100%-1rem)] mx-2 overflow-hidden  flex " >
-                        <span style={{backgroundColor:colors[e.line_index]}} className="text-xs z-10 p-2 flex-1 rounded font-semibold text-white">{e.from_time.split(":",2).join(':')}</span>
+                        <span style={{backgroundColor:colors[e.line_index]}} className="text-xs z-10 py-[1px] px-[6px] flex-1 rounded font-semibold text-white">{e.from_time.split(":",2).join(':')}</span>
                     </div>)
                     }
                 </>

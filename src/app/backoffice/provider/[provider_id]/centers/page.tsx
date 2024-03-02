@@ -22,9 +22,9 @@ export default async function ProviderCenters(){
         </div>
         </div>
         <div className=" grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 px-4 gap-4">
-        {data?.map(c=><>
-            <div className="flex flex-col w-full box-border p-4 shadow bg-white rounded-lg text-sm relative mt-14 ">
-                <Image src={c.metadata.logo?c.metadata.logo:center_logo_placeholder} width={80} height={80} className="absolute bg-white -top-7 w-20 h-20 object-cover rounded-lg shadow-md " alt={""}></Image>
+        {data?.length!=0 && data?.map(c=><>
+            <div className="flex flex-col w-full box-border p-4 shadow bg-white  text-sm relative mt-14 ">
+                <Image src={c.metadata.logo?c.metadata.logo:center_logo_placeholder} width={80} height={80} className="absolute bg-white -top-7 w-20 h-20 object-cover rounded shadow-md " alt={""}></Image>
                 <Link href={`/backoffice/provider/${user!.id}/centers/${c.id}`}>
                     <p className="pl-24 text-gray-700 min-h-12 text-xl font-bold truncate" title={c.metadata.name}>{c.metadata.name}</p>
                 </Link>
@@ -60,6 +60,9 @@ export default async function ProviderCenters(){
             </div>
         </>
         )}
+        {data?.length==0 && <>
+        No Center Found
+        </>}
     </div>
     </div>
 }

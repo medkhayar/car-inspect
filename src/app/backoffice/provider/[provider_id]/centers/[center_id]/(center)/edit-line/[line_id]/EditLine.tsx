@@ -28,6 +28,7 @@ type Center={
 export default function EditLine({params,line}){
   
     const [isLoaded,setIsLoaded]=useState(false)
+    const [isUpdateLoaded,setIsUpdateLoaded]=useState(false)
     const [isDeleteLoaded,setIsDeleteLoaded]=useState(false)
     const [vehicleTypes,setVehicleTypes]=useState<any>(line.center_line_vehicle_types.map(l=>l.type))
     const [energyTypes,setEnergyTypes]=useState<any>(line.center_line_energy_types.map(l=>l.type))
@@ -37,9 +38,11 @@ export default function EditLine({params,line}){
         initialValues: {
         },
         onSubmit(){
+          setIsDeleteLoaded(true)
             deleteCenterLineV0(line.id).then(res=>{ 
                 const url=(`/backoffice/provider/${params.provider_id}/centers/${params.center_id}`)
                 router.push(url)
+                setIsDeleteLoaded(false)
               }).catch(e=>{
                 console.log("error",e)
                 setIsDeleteLoaded(false)
@@ -98,6 +101,7 @@ export default function EditLine({params,line}){
       onSubmit: (values) => {
         
         setIsLoaded(false);
+        setIsUpdateLoaded(true);
       if(formik.isValid){      
           let data={	
             id:line.id,
@@ -121,8 +125,11 @@ export default function EditLine({params,line}){
         console.log("ADDED ",res)
         const url=(`/backoffice/provider/${params.provider_id}/centers/${params.center_id}`)
         router.push(url)
+        
+        setIsUpdateLoaded(false);
       }).catch(err=>{
         console.log("err",err)
+        setIsUpdateLoaded(false);
       })
 
     }
@@ -213,7 +220,19 @@ export default function EditLine({params,line}){
         </div>
         <div className="md:col-span-5 text-right pt-6">
                 <div className="inline-flex items-end">
-                  <button disabled={!isLoaded} onClick={()=>{formik.submitForm()}} className="bg-[#3D84A7] hover:bg-[#47466D] text-xs text-white p-2 px-4 rounded">Update control line</button>
+                  <button disabled={!isLoaded || isUpdateLoaded} onClick={()=>{formik.submitForm()}} className="bg-[#3D84A7] hover:bg-[#47466D] text-xs text-white p-2 px-4 rounded flex">
+                  {!isUpdateLoaded && <>Update control line</>}
+                  {isUpdateLoaded && <>
+                    <svg className="w-5 h-5 mr-3 -ml-1 text-white-500 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    <span>...</span>
+                    </>}
+                  </button>
                 </div>
         </div>
         <hr className="mt-4"></hr>
@@ -232,7 +251,19 @@ export default function EditLine({params,line}){
 
               <div className="md:col-span-5 text-right">
                 <div className="inline-flex items-end">
-                  <button disabled={!isLoaded} onClick={()=>{formik_delete.submitForm()}} className="bg-red-600 hover:bg-red-700 text-xs text-white  py-2 px-4 rounded">Delete control line</button>
+                  <button disabled={!isLoaded || isDeleteLoaded} onClick={()=>{formik_delete.submitForm()}} className="bg-red-600 hover:bg-red-700 text-xs text-white  py-2 px-4 rounded flex">
+                  {!isDeleteLoaded && <>Remove control line</>}
+                  {isDeleteLoaded && <>
+                    <svg className="w-5 h-5 mr-3 -ml-1 text-white-500 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    <span>...</span>
+                    </>}
+                  </button>
                 </div>
               </div>
 

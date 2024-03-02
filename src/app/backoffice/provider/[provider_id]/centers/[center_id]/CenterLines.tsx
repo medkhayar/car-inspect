@@ -35,7 +35,7 @@ useComponentDidUpdate(()=>{
     return <div className=" py-6 flex flex-col w-full">
      
       {/*<p className="text-gray-500 mb-6">adding a new center to your list.</p>*/}
-      <div className="bg-white w-full rounded  p-4 px-4 md:p-4 mb-6">
+      <div className="bg-white w-full   p-4 px-4 md:p-4 mb-6">
       <div className=" px-1 pb-4 flex justify-between ">
             <p className="text-base font-semibold ">Centres control lines</p>
         <div>
@@ -53,7 +53,7 @@ useComponentDidUpdate(()=>{
         </div>}
 
         {!isLoading && <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-        {lines?.map(l=> <div onClick={()=>{setLine(l)}} key={l.id} className={`p-4 bg-white flex flex-col rounded-md  border-1 ${line?(line!.id!=l.id?'border-gray-200': 'border-[#3D84A7]'):''} cursor-pointer`}>
+        {lines?.map(l=> <div onClick={()=>{setLine(l)}} key={l.id} className={`p-4 bg-white flex flex-col rounded  border-1 ${line?(line!.id!=l.id?'border-gray-200': 'border-[#3D84A7]'):''} cursor-pointer`}>
             <div className="flex items-center justify-between pb-2">
                 <p className="text-sm font-bold ">{l.name} </p>
                 <Link href={`/backoffice/provider/${provider}/centers/${center.id}/edit-line/${l.id}`} className="p-2 px-4 text-xs border-1 bg-[#3D84A7] hover:bg-[#47466D] rounded-md text-white font-bold"> edit</Link>
