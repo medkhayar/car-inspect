@@ -66,14 +66,14 @@ export default async function Registration() {
           <h3>Please choose an account type</h3>
         </div>
         <div className="flex flex-col md:flex-row pb-12">
-          <button className="p-6 border-[1px] flex flex-col border-[#eeeeee] m-3" onClick={setAsClient} >
+          <button className="p-6 border-[1px] flex flex-col border-[#eeeeee] m-3 hover:border-[#333333]" onClick={setAsClient} >
             <img src="/assets/user.svg"  className="h-44 w-52 object-cover p-4"/>
-            <span className="px-6">Set as client</span>
+            <span className="px-6 font-bold">Client</span>
           </button>
           
-          <button className="p-6 border-[1px] flex flex-col border-[#eeeeee] m-3" onClick={setAsProvider} >
+          <button className="p-6 border-[1px] flex flex-col border-[#eeeeee] m-3 hover:border-[#333333]" onClick={setAsProvider} >
             <img src="/assets/inspect.png" className="h-44 w-52 object-cover"/>
-            <span className="px-6">Set as Provider</span>
+            <span className="px-6 font-bold">Provider</span>
           </button>
         </div>
         </div>

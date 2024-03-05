@@ -99,6 +99,42 @@ export async function addTest(){
         
         return await supabase.auth.admin.updateUserById(user,{ban_duration:'1000000h'})
     }
+    
+    export async function getUserById(id) {
+        
+        const cookieStore = cookies()
+        const supabase=createServerClient(env.NEXT_PUBLIC_SUPABASE_URL!,env.NEXT_SECRET_SUPABASE_ROLE_KEY!,{ 
+            auth:{persistSession:false},
+            cookies: {
+                get(name: string) {
+                  return cookieStore.get(name)?.value
+                },
+                set(name: string, value: string, options: CookieOptions) {
+                  try {
+                    cookieStore.set({ name, value, ...options })
+                  } catch (error) {
+                    // The `set` method was called from a Server Component.
+                    // This can be ignored if you have middleware refreshing
+                    // user sessions.
+                  }
+                },
+                remove(name: string, options: CookieOptions) {
+                  try {
+                    cookieStore.set({ name, value: '', ...options })
+                  } catch (error) {
+                    // The `delete` method was called from a Server Component.
+                    // This can be ignored if you have middleware refreshing
+                    // user sessions.
+                  }
+                }
+            }
+        });
+       
+        //revalidatePath('/');
+        
+        return await supabase.auth.admin.getUserById(id);
+    }
+    
 
     export async function updateProviderV0(provider){
         const cookieStore = cookies()
@@ -274,16 +310,33 @@ export async function addTest(){
     End Center Line Time Slot
  */
 
+    export async function getVehicleById(id){
+        const cookieStore = cookies()
+        const supabase=createServerComponentClient<Database>({ cookies: () => cookieStore });
+        return await supabase
+        .from('client_vehicles')
+        .select("*, vehicle_brands(*), energy_types(*), vehicle_types(*)").eq("id",id).single()
+    }
+    
 
 
 
-export async function getVehicleTypes(){
-    const cookieStore = cookies()
-    const supabase=createServerComponentClient<Database>({ cookies: () => cookieStore });
-    return await supabase
-    .from('vehicle_types')
-    .select()
-}
+    export async function getVehicleTypes(){
+        const cookieStore = cookies()
+        const supabase=createServerComponentClient<Database>({ cookies: () => cookieStore });
+        return await supabase
+        .from('vehicle_types')
+        .select()
+    }
+    export async function updateAppointmentStatus(appointment,status){
+        const cookieStore = cookies()
+        const supabase=createServerComponentClient<Database>({ cookies: () => cookieStore });
+        revalidatePath('/');
+        return await supabase
+        .from('appointments')
+        .update({metadata:{status}})
+        .eq('id',appointment)
+    }
 
 export async function getAppointmentTypes(){
     const cookieStore = cookies()

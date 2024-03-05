@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import ManageCenterLineTimeSlot from "./ManageCenterLineTimeSlot";
 import { randomUUID } from "crypto";
 import { height } from "@fortawesome/free-solid-svg-icons/fa0";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAdd } from "@fortawesome/free-solid-svg-icons";
 
 const days=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
 const colors=["#00a1c2","#f38400","#008856","#be0032","#f3c300","#ffb5bA","#9a4eae"];
@@ -77,7 +79,9 @@ export default function CenterScheduler({isLoading,line,provider,center,lines,er
         <div className="p-4 pb-6 flex justify-between ">
             <p className="text-base font-semibold ">Controls time table<br/>{line?`{ ${line?.name} }`:" - ( please select a control line )"}</p>
         <div>
-            <button onClick={()=>setShowSlotManager(true)} className="p-2 px-4 text-xs border-1 bg-[#3D84A7] hover:bg-[#47466D] rounded-md text-white font-bold"> new time slot </button>
+            <button onClick={()=>setShowSlotManager(true)} className="p-2 px-4 text-xs border-1 bg-[#3D84A7] hover:bg-[#47466D] rounded-md text-white font-bold">
+            <FontAwesomeIcon icon={faAdd} className="mr-2"/> 
+             New time slot </button>
         </div>
         </div>
         <div className="flex justify-between md:hidden p-4 pt-0">

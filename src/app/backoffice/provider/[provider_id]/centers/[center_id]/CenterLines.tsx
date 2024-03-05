@@ -13,6 +13,8 @@ import { useGlobalContext } from "@/contexts/GlobalContext"
 import Link from "next/link"
 import { TypeMetaV1 } from "@/metadata.types"
 import { useComponentDidUpdate } from "@/utils/useComponentDidUpdate"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faAdd, faBoxOpen, faEdit } from "@fortawesome/free-solid-svg-icons"
 
 type Center={
     name:string,
@@ -39,7 +41,9 @@ useComponentDidUpdate(()=>{
       <div className=" px-1 pb-4 flex justify-between ">
             <p className="text-base font-semibold ">Centres control lines</p>
         <div>
-            <Link href={`/backoffice/provider/${provider}/centers/${center.id}/new-line`} className="p-2 px-4 text-xs border-1 bg-[#3D84A7] hover:bg-[#47466D] rounded-md text-white font-bold"> new control line </Link>
+            <Link href={`/backoffice/provider/${provider}/centers/${center.id}/new-line`} className="p-2 px-4 text-xs border-1 bg-[#3D84A7] hover:bg-[#47466D] rounded-md text-white font-bold"> 
+            <FontAwesomeIcon icon={faAdd} className="mr-2"/> 
+            New control line </Link>
         </div>
         </div>
       {isLoading && <div role="status" className="max-w-sm animate-pulse">
@@ -56,7 +60,9 @@ useComponentDidUpdate(()=>{
         {lines?.map(l=> <div onClick={()=>{setLine(l)}} key={l.id} className={`p-4 bg-white flex flex-col rounded  border-1 ${line?(line!.id!=l.id?'border-gray-200': 'border-[#3D84A7]'):''} cursor-pointer`}>
             <div className="flex items-center justify-between pb-2">
                 <p className="text-sm font-bold ">{l.name} </p>
-                <Link href={`/backoffice/provider/${provider}/centers/${center.id}/edit-line/${l.id}`} className="p-2 px-4 text-xs border-1 bg-[#3D84A7] hover:bg-[#47466D] rounded-md text-white font-bold"> edit</Link>
+                <Link href={`/backoffice/provider/${provider}/centers/${center.id}/edit-line/${l.id}`} className=" text-xs  text-[#3D84A7] hover:text-[#47466D] rounded-md font-bold"> 
+                    <FontAwesomeIcon icon={faEdit} className="text-sm"/>
+                </Link>
             </div>
             <hr className="pb-2"/>
             <div className="flex ">{l.center_line_vehicle_types.map(vt=><div key={`vtype-${vt.id}`}  title={vt.vehicle_types.type.en} className=" bg-white w-8 h-8 mr-1" dangerouslySetInnerHTML={{__html:(vt.vehicle_types.metadata as TypeMetaV1).icon.content}}></div>)}
@@ -68,6 +74,15 @@ useComponentDidUpdate(()=>{
             </div>
             )}
         </div>}
+        {lines?.length==0 && <div className="p-4 w-full flex"> <div className="flex w-full flex-col justify-center items-center mt-4 p-4  min-h-56 border-1 border-gray-300  bg-gray-50">
+                    <div className="flex justify-center items-center">
+                        <FontAwesomeIcon icon={faBoxOpen} className="text-base  text-gray-400"/>
+                        <span className="px-4 text-base text-gray-500">this account have no control line yet.<br></br></span>
+                    </div>
+                    <Link href={`/backoffice/provider/${provider}/centers/${center.id}/new-line`} className="p-4 py-2 rounded mt-4 text-sm font-semibold  text-gray-100 bg-picton-blue-600 hover:bg-picton-blue-700 flex">
+                        <FontAwesomeIcon icon={faAdd} className="mx-1"/> Add a new control line.</Link>
+                    
+                </div></div>}
 
       </div>
       

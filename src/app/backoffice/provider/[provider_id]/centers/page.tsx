@@ -3,12 +3,14 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
 import Link from "next/link"
 import Image from 'next/image'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faAdd, faBoxOpen } from "@fortawesome/free-solid-svg-icons"
+import { center_logo_placeholder } from "@/utils/data"
 
 export default async function ProviderCenters(){
     const supabase= createServerComponentClient({cookies})
     const {data:{user}}= await supabase.auth.getUser()
     console.log("user",user);
-    const center_logo_placeholder="/assets/center-placeholder.png";
     const {data,error} = await supabase.from("centers").select(`
        *, cities(*)
     `).eq('provider',user!.id).eq('deleted',false).order('id')
@@ -18,7 +20,9 @@ export default async function ProviderCenters(){
         <div className="p-4 flex justify-between items-center ">
             <h2 className="font-semibold text-xl text-gray-600 px-2">Centres</h2>
         <div>
-            <Link href={`/backoffice/provider/${user!.id}/centers/new`} className="p-2 px-4 text-xs border-1 bg-[#3D84A7] hover:bg-[#47466D] rounded-md text-white font-bold"> new center </Link>
+            <Link href={`/backoffice/provider/${user!.id}/centers/new`} className="p-2 px-4 text-xs border-1 bg-[#3D84A7] hover:bg-[#47466D] rounded-md text-white font-bold"> 
+            <FontAwesomeIcon icon={faAdd} className="mr-2"/> 
+            New center </Link>
         </div>
         </div>
         <div className=" grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 px-4 gap-4">
@@ -60,9 +64,15 @@ export default async function ProviderCenters(){
             </div>
         </>
         )}
-        {data?.length==0 && <>
-        No Center Found
-        </>}
+        
     </div>
+    {data?.length==0 && <div className="p-4 w-full flex"> <div className="flex w-full flex-col justify-center items-center mt-4 p-4  min-h-56 border-1 border-gray-300  bg-gray-50">
+                    <div className="flex justify-center items-center">
+                        <FontAwesomeIcon icon={faBoxOpen} className="text-base  text-gray-400"/>
+                        <span className="px-4 text-base text-gray-500">this account have no center yet.<br></br></span>
+                    </div>
+                    <Link href={`/backoffice/provider/${user!.id}/centers/new`} className="p-4 py-2 rounded mt-4 text-sm font-semibold  text-gray-100 bg-picton-blue-600 hover:bg-picton-blue-700"> Add a new center.</Link>
+                    
+                </div></div>}
     </div>
 }

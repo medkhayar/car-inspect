@@ -34,3 +34,5 @@ export const  days=[
         ar:"",
         fr:"Dimanche",
     }];
+
+    export const center_logo_placeholder="/assets/center-placeholder.png";

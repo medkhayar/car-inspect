@@ -57,7 +57,7 @@ export default function EditCenter({provider_id,cities,center,error}){
         name :`${center.metadata.name}`,
         address:`${center.metadata.address}`,
         city:(null || cities.filter(c=>c.value==center.city)[0]) as SelectValue,
-        zipcode:`${center.zipcode}`,
+        zipcode:`${center.metadata.zipcode}`,
         manager:{
           name:`${center.metadata.manager.name}`,
           email:`${center.metadata.manager.email}`,
@@ -72,6 +72,7 @@ export default function EditCenter({provider_id,cities,center,error}){
       validationSchema: Yup.object({
           name:Yup.string().required("required."),
           address:Yup.string().required("required."),
+          zipcode:Yup.string().required("required.").matches(/^\d\d\d\d\d$/,"incorrect zipcode"),
           city:Yup.object().required('required.'),
           manager:Yup.object({
             name:Yup.string().required('required.'),
@@ -208,9 +209,16 @@ export default function EditCenter({provider_id,cities,center,error}){
                     options={cities}/>
               </div>
  
-              <div className="md:col-span-1">
-                <label htmlFor="zipcode">Zipcode</label>
-                <InputMask mask="_____" replacement={{_:/\d/}} showMask={true} type="text" name="zipcode" id="zipcode" className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="" />
+              <div className="md:col-span-2">
+                <label htmlFor="zipcode">Zipcode
+                <span className=' self-center text-right text-red-500 text-xs'> &nbsp;{(formik.touched.zipcode && formik.errors.zipcode ? formik.errors.zipcode : '') }</span>
+             
+             </label>
+                <InputMask
+                value={formik.values.zipcode}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                 mask="_____" replacement={{_:/\d/}} showMask={true} type="text" name="zipcode" id="zipcode" className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="" />
               </div>
              
             </div>

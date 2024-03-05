@@ -9,7 +9,12 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import { CloseIcon } from "@/components/Select/components/Icons";
 import InputDatePicker from "@/components/InputDatePicker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendar, faCalendarDay, faClock, faClockFour } from "@fortawesome/free-solid-svg-icons";
+import { faBoxArchive, faBoxOpen, faCalendar, faCalendarDay, faClock, faClockFour } from "@fortawesome/free-solid-svg-icons";
+import SideModal from "@/components/SideModal";
+import AppointmentApproval from "./AppointmentApproval";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { center_logo_placeholder } from "@/utils/data";
 
 function DateEmptyToolBar(props: DatePickerToolbarProps<any>) {
     return <></>
@@ -18,7 +23,7 @@ function DateEmptyActionBar() {
         return <></>
 }
 
-export default function Appointments({centers}){
+export default function Appointments({centers,provider_id}){
     var groupBy = function(xs, key) {
         return xs.reduce(function(rv, x) {
           (rv[x[key]] = rv[x[key]] || []).push(x);
@@ -32,45 +37,74 @@ export default function Appointments({centers}){
         return (da>db)?1:(da<db)?-1:0;
     }
 
-    const getAppointments=(slots:any[])=>{
-        return groupBy(slots.map(s=>s.appointments.map(a=>{return {...a,to_time:s.to_time,from_time:s.from_time}})).flat().sort((sortAppointmentTime)),'appointment_date')
+    const getAppointments=(slots:any[],line,center)=>{
+        return groupBy(slots.map(s=>s.appointments.map(a=>{return {line:line.name,center:center.metadata,...a,to_time:s.to_time,from_time:s.from_time}})).flat().sort((sortAppointmentTime)),'appointment_date')
     }
 
     const [date,setDate]=useState<any>(moment())
+    const [selectedAppointment,setSelectedAppointment]=useState<any>(null)
 
+    function approveAppointment(appointment){
+        setSelectedAppointment(appointment);
+    }
+
+    const router=useRouter()
+    function updateAppointment(){
+        if(selectedAppointment){
+            //router.refresh()
+            setSelectedAppointment(null)
+        }
+    }
+
+    const centers_lines_count=centers.map(c=>c.center_lines.map(l=>l)).flat().length
     return <div className="p-4 w-full">
         
     <div className="p-4 w-full  mx-auto">
-        <h2 className="font-semibold text-xl text-gray-600">Appointment lisiting</h2>
+        <h2 className="font-semibold text-xl text-gray-600">Appointment listing</h2>
         <p className="text-gray-500 ">list all available appointments.</p>
         </div>
+                {centers_lines_count==0 && <div className="flex flex-col justify-center items-center mt-4 p-4  min-h-56 border-1 border-gray-300  bg-gray-50">
+                    <div className="flex justify-center items-center">
+                        <FontAwesomeIcon icon={faBoxOpen} className="text-base  text-gray-400"/>
+                        <span className="px-4 text-base text-gray-500">this account have no control lines yet.<br></br></span>
+                    </div>
+                    <Link href={`/backoffice/provider/${provider_id}/centers/`} className="p-4 py-2 rounded mt-4 text-sm font-semibold  text-gray-100 bg-picton-blue-600 hover:bg-picton-blue-700"> Goto centers managment.</Link>
+                    
+                </div>}
         <div className="p-4">
-            {centers.map(c=><div className="">
+            {centers.map(c=><div key={`c-${c.id}`} className="">
                 <div className="flex items-center pr-2 py-2">
-                    <img className="rounded-full object-cover h-10 w-10 mr-2 shadow" src={c.metadata.logo}></img>
+                    <img className="rounded-full object-cover h-10 w-10 mr-2 shadow bg-white" src={c.metadata.logo?c.metadata.logo:center_logo_placeholder} ></img>
                     <span className="px-4 text-gray-700 text-base">{c.metadata.name}</span>
                 </div>
                 
-                {c.center_lines.map(l=><div className=" bg-white flex flex-col p-4  mb-2">
+                {c.center_lines.map(l=> <div key={`line-${l.name}`} className=" bg-white flex flex-col p-4  mb-2">
+                    
                         <h3 className="text-gray-600 text-sm pb-2">{l.name}</h3>
                         <hr/>
                         <div className=" flex flex-col">
                             
-                            {Object.entries(getAppointments(l.center_line_time_slots)).map(([key,value])=>{
-                                return <>
+                            {Object.entries(getAppointments(l.center_line_time_slots,l,c)).map(([key,value])=>{
+                                return <div key={`line-${key}`}>
                                 <div className="p-2 flex">
                                 <FontAwesomeIcon className="px-2 text-gray-400" icon={faCalendarDay}/>
                                 <span className="text-sm font-semibold">{key}</span>
                                 </div>
                                 <div className="flex flex-wrap px-4">
-                                {(value as any[]).map(v=><div className="p-2 cursor-pointer hover:bg-picton-blue-500 hover:text-white bg-gray-100 rounded border-[1px] border-[#eeeeee]">
+                                {(value as any[]).map(v=><button key={`ap-${v.id}`} onClick={()=>approveAppointment(v)} className="p-2 cursor-pointer hover:bg-picton-blue-500 hover:text-white bg-gray-100 rounded border-[1px] border-[#eeeeee]">
                                     <FontAwesomeIcon className=" pr-1 text-sm" icon={faClockFour}/>
                                     <span className="text-sm px-1">{v.from_time.split(":",2).join(':')}</span>
-                                </div>
+                                </button>
                                 )}
                                 </div>
-                                </>
+                                </div>
                             })}
+                            {Object.entries(getAppointments(l.center_line_time_slots,l,c)).length==0 && <>
+                                <div className="p-2 flex justify-center items-center">
+                                    <FontAwesomeIcon className="text-gray-500 " icon={faBoxArchive}/>
+                                    <span className="text-sm px-2 text-gray-500">No appointement for this line</span>
+                                </div>
+                            </>}
                         </div>
                 </div>)}
             </div>)}
@@ -136,6 +170,7 @@ export default function Appointments({centers}){
     </ul>
 </div>*/}
 
+{selectedAppointment && <SideModal title="Appointment approval" component={<AppointmentApproval onApprove={updateAppointment} onDeny={updateAppointment}  onCancel={()=>setSelectedAppointment(null)} appointment={selectedAppointment}/>} onCancel={()=>setSelectedAppointment(null)} onValidate={()=>{}} />}
     </div>
     
 }
