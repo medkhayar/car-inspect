@@ -22,5 +22,5 @@ export default async function AppointmentsPage({params}){
         )
     )`).eq('provider',params.provider_id).eq('center_lines.center_line_time_slots.appointments.metadata->>status','pending')
     console.log(centers)
-    return <Appointments centers={centers.data}/>
+    return <Appointments provider_id={params.provider_id} centers={centers.data}/>
 }
