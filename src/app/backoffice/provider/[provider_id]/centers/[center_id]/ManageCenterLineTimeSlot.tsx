@@ -138,7 +138,7 @@ function detectInterferences(data) {
        <div className="flex w-full flex-col text-sm ">
    
 
-       <div className="p-4 flex w-full flex-col overflow-y-auto">
+       <div className="p-4 flex w-full flex-col overflow-y-auto flex-1">
     
        
 
@@ -152,7 +152,7 @@ function detectInterferences(data) {
                 </div>
             </div>
             
-            <div className="px-4 pb-2 flex flex-col  w-full items-center">
+            <div className="p-2 pb-2 flex flex-col  w-full items-center">
                 <span className="text-sm text-gray-800 p-4  min-w-16 w-full flex justify-between pb-1">Day <span className=' px-2 self-center text-right text-red-500 text-xs'> &nbsp;{(formik.touched.day && formik.errors.day ? formik.errors.day : '') }</span></span>
                 <div className="flex flex-1  px-4 w-full">
                     <Select isSearchable={true} selectClass={'bg-gray-50'} title="Select control line"  placeholder="" isClearable={true} containerClass={"h-10 mt-1 shadow-none w-full "} primaryColor="neutral"
@@ -162,7 +162,7 @@ function detectInterferences(data) {
                 </div>
             </div>
             
-            <div className="px-4 pb-2 flex flex-col  w-full items-center">
+            <div className="p-2 pb-2 flex flex-col  w-full items-center">
                 <span className="text-sm text-gray-800 p-4  min-w-16 w-full flex justify-between pb-1" >From <span className='px-2 self-center text-right text-red-500 text-xs'> &nbsp;{(formik.touched.from && formik.errors.from ? formik.errors.from : '') }</span></span>
                 
                
@@ -173,7 +173,7 @@ function detectInterferences(data) {
                 </div>
             </div>
             
-            <div className="p-4 pt-0 flex flex-col  w-full items-center">
+            <div className="p-2 pt-0 flex flex-col  w-full items-center">
                 <span className="text-sm text-gray-800 p-4 min-w-16  w-full flex justify-between pb-1">To <span className=' px-2 self-center text-right text-red-500 text-xs'> &nbsp;{(formik.touched.to && formik.errors.to ? formik.errors.to : '') }</span></span>
                 
                
