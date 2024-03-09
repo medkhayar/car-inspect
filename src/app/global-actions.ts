@@ -70,7 +70,7 @@ export async function addTest(){
     export async function deleteUserV0(user) {
         
         const cookieStore = cookies()
-        const supabase=createServerClient(env.NEXT_PUBLIC_SUPABASE_URL!,env.NEXT_SECRET_SUPABASE_ROLE_KEY!,{ 
+        const supabase=createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.NEXT_SECRET_SUPABASE_ROLE_KEY!,{ 
             cookies: {
                 get(name: string) {
                   return cookieStore.get(name)?.value
@@ -104,7 +104,7 @@ export async function addTest(){
     export async function getUserById(id) {
         
         const cookieStore = cookies()
-        const supabase=createServerClient(env.NEXT_PUBLIC_SUPABASE_URL!,env.NEXT_SECRET_SUPABASE_ROLE_KEY!,{ 
+        const supabase=createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.NEXT_SECRET_SUPABASE_ROLE_KEY!,{ 
             auth:{persistSession:false},
             cookies: {
                 get(name: string) {
