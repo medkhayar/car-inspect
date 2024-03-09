@@ -94,6 +94,13 @@ export default async function Layout({ children }) {
                         </div>
                         <div className="p-4">Appointments</div>
                     </Link>
+
+                    <Link   href={`/backoffice/provider/${user.id}/requests`} className={`${!user?.user_metadata.is_registration_complete?'pointer-events-none text-gray-200':''} flex  min-w-[15rem]  flex-col lg:flex-row text-sm  items-center p-4 bg-white shadow  lg:shadow-none lg:bg-transparent lg:py-0`}>
+                        <div className="p-4">
+                            <FontAwesomeIcon icon={faCalendar} className=""/>
+                        </div>
+                        <div className="p-4">Requests</div>
+                    </Link>
                     
                     <Link  prefetch={false}  href={`/auth/v1/logout/`} className="flex cursor-pointer  min-w-[15rem] flex-col lg:flex-row text-sm   items-center p-4 bg-white shadow  lg:shadow-none lg:bg-transparent lg:py-0">
                         <div className="p-4">

@@ -63,11 +63,7 @@ export function SignUp(){
         </>}
       {!isCompany &&<> 
       <div className="mt-2">
-          <label className="block text-gray-700 text-sm font-bold mb-2">First name</label>
-          <input className=" text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="text"/>
-      </div>
-      <div className="mt-2">
-          <label className="block text-gray-700 text-sm font-bold mb-2">Last name</label>
+          <label className="block text-gray-700 text-sm font-bold mb-2">Full name</label>
           <input className=" text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="text"/>
       </div>
       </>}

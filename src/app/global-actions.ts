@@ -3,6 +3,7 @@ import { Database } from '@/database.types';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { CookieOptions, createServerClient } from '@supabase/ssr';
 import { randomUUID } from 'crypto';
+import {Moment} from 'moment';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { env } from 'process';
@@ -337,6 +338,15 @@ export async function addTest(){
         .update({metadata:{status}})
         .eq('id',appointment)
     }
+    export async function validateAppointmentStatus(appointment,data){
+        const cookieStore = cookies()
+        const supabase=createServerComponentClient<Database>({ cookies: () => cookieStore });
+        revalidatePath('/');
+        return await supabase
+        .from('appointments')
+        .update({metadata:{...data}})
+        .eq('id',appointment)
+    }
 
 export async function getAppointmentTypes(){
     const cookieStore = cookies()
@@ -361,3 +371,29 @@ export async function getVehicleBrands(){
 }
 
 
+
+
+
+export async function getCenterApprovedAppointmentsByDate(provider_id,date){
+    const cookieStore = cookies()
+    const supabase=createServerComponentClient<Database>({ cookies: () => cookieStore });
+    return await supabase.from('centers').select(`
+    id,
+    metadata, 
+    cities(name), 
+    center_lines(
+        name, 
+        center_line_time_slots(
+            day_of_week,
+            from_time,
+            to_time ,
+            appointments(
+                id,
+                appointment_date, 
+                metadata,
+                client_vehicles(*)
+            )
+        )
+    )`).eq('provider',provider_id).eq('center_lines.center_line_time_slots.appointments.metadata->>status','approved')
+    .eq('center_lines.center_line_time_slots.appointments.appointment_date',date);
+}

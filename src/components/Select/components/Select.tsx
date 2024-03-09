@@ -220,7 +220,7 @@ const Select: React.FC<SelectProps & {containerClass?:any,selectClass?:any,selec
                                 </span></>)}
                                 
                                 {((value && (value! as Option).image) && <>{(value! as Option).image} 
-                                <span className={`flex flex-col ml-12 ${selecetedLabelClass}`} >
+                                <span className={`flex flex-col ml-4 ${selecetedLabelClass}`} >
                                     {(value as Option).label} 
                                 </span></>)}
                                 

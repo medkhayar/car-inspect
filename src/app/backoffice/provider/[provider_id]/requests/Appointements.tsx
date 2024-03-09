@@ -60,8 +60,8 @@ export default function Appointments({centers,provider_id}){
     return <div className="p-4 w-full">
         
     <div className="p-4 w-full  mx-auto">
-        <h2 className="font-semibold text-xl text-gray-600">Appointment listing</h2>
-        <p className="text-gray-500 ">list all available appointments.</p>
+        <h2 className="font-semibold text-xl text-gray-600">Appointments Requests</h2>
+        <p className="text-gray-500 ">list all requested appointments.</p>
         </div>
                 {centers_lines_count==0 && <div className="flex flex-col justify-center items-center mt-4 p-4  min-h-56 border-1 border-gray-300  bg-gray-50">
                     <div className="flex justify-center items-center">
@@ -171,6 +171,5 @@ export default function Appointments({centers,provider_id}){
 </div>*/}
 
 {selectedAppointment && <SideModal title="Appointment approval" component={<AppointmentApproval onApprove={updateAppointment} onDeny={updateAppointment}  onCancel={()=>setSelectedAppointment(null)} appointment={selectedAppointment}/>} onCancel={()=>setSelectedAppointment(null)} onValidate={()=>{}} />}
-    </div>
-    
+    </div> 
 }

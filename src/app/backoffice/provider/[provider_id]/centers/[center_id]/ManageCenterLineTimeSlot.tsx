@@ -1,9 +1,11 @@
 "use client";
 
 import {  deleteTimeSlot,upsertTimeSlot } from "@/app/global-actions";
+import { Alert } from "@/components/Alert";
 import Select from "@/components/Select";
 import { Option, SelectValue } from "@/components/Select/components/type";
 import SideModal from "@/components/SideModal";
+import { AlertData, AlertTypeV1 } from "@/metadata.types";
 import { days } from "@/utils/data";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,7 +16,7 @@ import * as Yup from 'yup'
 
 export default function ManageCenterLineTimeSlot({lines,time_slot,closeModal=()=>{},slotAddedOrUpdated=(s,isUpdate,is_delete)=>{}}){
     
-   
+  const [error,setError]=useState<AlertData|null>(null)
   const lines_options= lines.map(l=>{return {value:l.id,label:l.name}})
   const days_options= days.map((day,index)=>{return {value:index,label:day.en}})
 
@@ -116,7 +118,14 @@ function detectInterferences(data) {
           new Date(`01/01/2024 ${s.to_time}`)< new Date(`01/01/2024 ${data.to}`)) 
     
   })
-  console.log("interferences : ",interferences,line_slots)
+  if(interferences.length!=0){
+    setError({title:"Operation failed",type:AlertTypeV1.error,message:"This operation has failed, slots already occupying this time.",detailsControl:<div className="flex flex-1 flex-col p-4">
+      <span className="font-semibold">Interferences :</span>
+      <ul className=" flex flex-col list-disc list-inside ">
+        {interferences.map((i,index)=><li className="px-4" key={`interference-${index}`}>{`${i.from_time.split(':',2).join(':')} -> ${i.to_time.split(':',2).join(':')}`}</li>)}
+      </ul>
+    </div>})
+  }
   return interferences.length!=0;
 
 }
@@ -204,6 +213,7 @@ function detectInterferences(data) {
 </div>      <div className="flex w-full justify-end p-4 pt-0">
            
               </div>
+              <Alert show={error!=null} data={error!} onCancel={()=>setError(null)} onConfirm={()=>setError(null)}></Alert>
            </>} /> 
         {/*</div>
           </div>*/}
