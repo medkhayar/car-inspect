@@ -13,6 +13,7 @@ import Link from 'next/link';
 export default async function Layout({ children }) {
     const supabase= createServerComponentClient({cookies})
     const {data:{user}}= await supabase.auth.getUser()
+    console.log(user)
     if(!user){
         redirect('/access')
     }
@@ -53,7 +54,7 @@ export default async function Layout({ children }) {
                         <div className="p-4">Tableau de board</div>
                     </Link>
 
-                    <Link href={`/backoffice/client/${user.id}/profile`} className="flex  min-w-[15rem]  flex-col lg:flex-row text-sm text-gray-600 items-center p-4 bg-white shadow  lg:shadow-none lg:bg-transparent lg:py-0">
+                    <Link href={`/backoffice/client/${user.id}/profil`} className="flex  min-w-[15rem]  flex-col lg:flex-row text-sm text-gray-600 items-center p-4 bg-white shadow  lg:shadow-none lg:bg-transparent lg:py-0">
                         <div className="p-4 ">
                             
                         <FontAwesomeIcon icon={faUser} className=""/>
@@ -61,13 +62,13 @@ export default async function Layout({ children }) {
                         <div className="p-4">Mon profile</div>
                     </Link>
 
-                    <Link  href={`/backoffice/client/${user.id}/centers`} className="flex cursor-pointer  min-w-[15rem] flex-col lg:flex-row text-sm  text-gray-600 items-center p-4 bg-white shadow  lg:shadow-none lg:bg-transparent lg:py-0">
+                    <button  className="flex  min-w-[15rem]  flex-col lg:flex-row text-sm text-gray-600 items-center p-4 bg-white shadow  lg:shadow-none lg:bg-transparent lg:py-0">
                         <div className="p-4">
-                            
-                        <FontAwesomeIcon icon={faCar} className=""/>
+                            <FontAwesomeIcon icon={faCalendar} className=""/>
                         </div>
-                        <div className="p-4">centres</div>
-                    </Link>
+                        <div className="p-4">Mes rendez-vous</div>
+                    </button>
+                    
                     <button  className="flex cursor-pointer  min-w-[15rem] flex-col lg:flex-row text-sm  text-gray-600 items-center p-4 bg-white shadow  lg:shadow-none lg:bg-transparent lg:py-0">
                         <div className="p-4">
                            
@@ -76,12 +77,6 @@ export default async function Layout({ children }) {
                         <div className="p-4">Mes tickets</div>
                     </button>
 
-                    <button  className="flex  min-w-[15rem]  flex-col lg:flex-row text-sm text-gray-600 items-center p-4 bg-white shadow  lg:shadow-none lg:bg-transparent lg:py-0">
-                        <div className="p-4">
-                            <FontAwesomeIcon icon={faCalendar} className=""/>
-                        </div>
-                        <div className="p-4">Mes rendez-vous</div>
-                    </button>
 
                     <Link prefetch={false}  href={`/auth/v1/logout/`} className="flex cursor-pointer  min-w-[15rem] flex-col lg:flex-row text-sm  text-gray-600 items-center p-4 bg-white shadow  lg:shadow-none lg:bg-transparent lg:py-0">
                         <div className="p-4">

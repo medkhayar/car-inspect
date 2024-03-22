@@ -168,6 +168,31 @@ export async function addTest(){
             })
     }
 
+    export async function updateClientV0(client){
+        const cookieStore = cookies()
+        const supabase=createServerComponentClient<Database>({ cookies: () => cookieStore });
+        revalidatePath('/');
+        const {data,error}=await supabase.auth.getUser();
+       
+        return await supabase.auth.updateUser(
+            {
+                
+                data:
+                {
+                    ...data.user!.user_metadata,
+                    
+                        address:client.address,
+                        city: client.city,
+                        zipcode:client.zipcode,
+                        
+                            ...client.manager
+                        
+                    ,
+                    is_registration_complete:true
+                }
+            })
+    }
+
     export async function getCenterLines(center) {
         const cookieStore = cookies()
         const supabase=createServerComponentClient<Database>({ cookies: () => cookieStore });

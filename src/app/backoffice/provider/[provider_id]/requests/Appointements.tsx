@@ -102,7 +102,7 @@ export default function Appointments({centers,provider_id}){
                             {Object.entries(getAppointments(l.center_line_time_slots,l,c)).length==0 && <>
                                 <div className="p-2 flex justify-center items-center">
                                     <FontAwesomeIcon className="text-gray-500 " icon={faBoxArchive}/>
-                                    <span className="text-sm px-2 text-gray-500">No appointement for this line</span>
+                                    <span className="text-sm px-2 text-gray-500">No request for this line</span>
                                 </div>
                             </>}
                         </div>
